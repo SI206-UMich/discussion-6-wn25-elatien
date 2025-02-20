@@ -14,10 +14,22 @@ def load_csv(f):
     
     Note: Don't strip or otherwise modify strings. Don't change datatypes from strings. 
     '''
-
     base_path = os.path.abspath(os.path.dirname(__file__))
     full_path = os.path.join(base_path, f)
-    # use this 'full_path' variable as the file that you open
+
+    data = {}
+    with open(full_path, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            year = row['Year']
+            month = row['Month']
+            visitors = row['Visitors']
+
+            if year not in data:
+                data[year] = {}
+            data[year][month] = visitors
+    
+    return data
 
 def get_annual_max(d):
     '''
